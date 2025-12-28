@@ -41,7 +41,6 @@ async fn main() {
 
     println!("Listening on http://0.0.0.0:3002");
 
-    // start server (axum 0.7+)
     axum::serve(listener, app)
         .await
         .expect("Failed to start server");
