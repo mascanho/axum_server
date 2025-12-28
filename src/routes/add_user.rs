@@ -83,3 +83,22 @@ async fn insert_user_to_supabase(
         }
     }
 }
+
+pub async fn create_user(
+    State(state): State<Arc<AppState>>,
+    Json(payload): Json<User>,
+) -> Result<impl IntoResponse, ApiError> {
+    let user = User {
+        user: payload.user,
+        created_at: Utc::now().to_rfc3339(),
+    };
+
+    match insert_user_to_supabase(&state.supabase, &user).await {
+        Ok(success) => Ok(Json(json!({
+            "success": success,
+            "user_id": user,
+            "message": "User Added Successfully",
+        }))),
+        Err(e) => Err(ApiError::Other(format!("Failed to insert user: {}", e))),
+    }
+}

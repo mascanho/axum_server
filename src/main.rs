@@ -1,4 +1,9 @@
-use axum::{Json, Router, http::StatusCode, response::IntoResponse, routing::get};
+use axum::{
+    Json, Router,
+    http::StatusCode,
+    response::IntoResponse,
+    routing::{get, post},
+};
 use serde_json::json;
 use std::sync::Arc;
 use supabase_rs::SupabaseClient;
@@ -90,11 +95,13 @@ async fn main() {
     // build our application with a route
     let app = Router::new()
         .route("/", get(routes::root::hello))
-        .route("/users/{user_id}", get(routes::add_user::user_result))
+        .route("/users", post(routes::add_user::create_user))
         .with_state(state);
 
     // bind to address
-    let listener = tokio::net::TcpListener::bind("0.0.0.0:3002").await.unwrap();
+    let listener = tokio::net::TcpListener::bind("localhost:8080")
+        .await
+        .unwrap();
 
     println!("✅ Server running!");
     println!("📡 Try these URLs:");
