@@ -47,8 +47,8 @@ pub async fn user_result(
 
     // Create userd
     let user = User {
-        user: Uuid::new_v4().to_string(),    // Generate a UUID
-        created_at: Utc::now().to_rfc3339(), // Convert current time to ISO8601
+        user: user_id.to_string(),
+        created_at: Utc::now().to_rfc3339(),
     };
 
     // Insert into Supabase
@@ -57,8 +57,6 @@ pub async fn user_result(
             "success": success,
             "user_id": user_id,
             "message": "User Added Successfully",
-            "user_data": user,
-            "supabase_url": state.supabase_url,
         }))),
         Err(e) => Err(ApiError::Other(format!("Failed to insert user: {}", e))),
     }
