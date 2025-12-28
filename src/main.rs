@@ -95,19 +95,16 @@ async fn main() {
     // build our application with a route
     let app = Router::new()
         .route("/", get(routes::root::hello))
-        .route("/users", post(routes::add_user::create_user))
+        .route("/users/", post(routes::add_user::create_user))
         .with_state(state);
 
     // bind to address
-    let listener = tokio::net::TcpListener::bind("localhost:8080")
-        .await
-        .unwrap();
+    let listener = tokio::net::TcpListener::bind("0.0.0.0:8080").await.unwrap();
 
     println!("✅ Server running!");
     println!("📡 Try these URLs:");
-    println!("   http://localhost:3002/");
-    println!("   http://localhost:3002/users/123");
-    println!("   http://localhost:3002/users/0 (should error)");
+    println!("   http://localhost:8080/");
+    println!("   http://localhost:8080/users/");
 
     axum::serve(listener, app)
         .await

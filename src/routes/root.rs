@@ -45,22 +45,5 @@ async fn get_page_title() -> Result<String, reqwest::Error> {
 }
 
 pub async fn hello() -> impl IntoResponse {
-    let mut receipt = Receipt::new(0, vec![]);
-
-    let page_title = get_page_title().await.map_err(|e| {
-        ApiError::Other("Error".to_string());
-    });
-
-    receipt.sum = 1000;
-    receipt.status = OrderStatus::Shipped.to_string();
-
-    receipt.items.push(page_title.unwrap());
-
-    let receit = json!({
-        "sum": receipt.sum,
-        "items": receipt.items,
-        "status": receipt.status,
-    });
-
-    Json(json!(receit))
+    Html("<h1>Welcome to RustySEO API !</h1>")
 }
