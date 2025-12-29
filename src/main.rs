@@ -2,6 +2,7 @@ use axum::{
     Json, Router,
     http::StatusCode,
     response::IntoResponse,
+    response::Redirect,
     routing::{get, post},
 };
 use serde_json::json;
@@ -94,7 +95,10 @@ async fn main() {
 
     // build our application with a route
     let app = Router::new()
-        .route("/", get(routes::root::hello))
+        .route(
+            "/",
+            get(|| async { Redirect::permanent("https://rustyseo.com") }),
+        )
         .route("/users/", post(routes::add_user::create_user))
         .with_state(state);
 
