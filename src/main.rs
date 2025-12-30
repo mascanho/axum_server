@@ -8,6 +8,7 @@ use axum::{
 use serde_json::json;
 use std::sync::Arc;
 use supabase_rs::SupabaseClient;
+
 // Remove unused import: use dotenv::dotenv;
 
 pub mod routes;
@@ -20,7 +21,7 @@ pub enum ApiError {
     Other(String),
 }
 
-#[derive(Debug, Clone)]
+#[derive(Debug)]
 pub struct AppState {
     pub supabase_url: String,
     pub supabase_key: String,
@@ -100,6 +101,7 @@ async fn main() {
             get(|| async { Redirect::permanent("https://rustyseo.com") }),
         )
         .route("/users/", post(routes::add_user::create_user))
+        .route("/quotes/", get(routes::quotes::get_random_quote))
         .with_state(state);
 
     // bind to address
